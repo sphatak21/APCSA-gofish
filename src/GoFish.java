@@ -161,11 +161,13 @@ public class GoFish {
                 } else {
                     System.out.print("PLAYER: Got any... ");
                     String rank = in.nextLine().trim().toUpperCase();
+                    checkQuit(rank);
                     card = Card.getCardByRank(rank);
                 }
             } else if (multiplayer){
                 System.out.print("PLAYER 2: Got any... ");
                 String rank = in.nextLine().trim().toUpperCase();
+                checkQuit(rank);
                 card = Card.getCardByRank(rank);
             }else {
                 if (computer.getHand().size() == 0) {
@@ -217,20 +219,26 @@ public class GoFish {
         System.out.println("#                                                       #");
         System.out.println("#########################################################");
 
-        String option;
         Scanner init = new Scanner(System.in);
-        boolean multi;
+        boolean multi = startGame(init);
+        new GoFish(multi).play();
+    }
+    private static boolean startGame(Scanner init){
+        String option;
         while(true){
-            System.out.print("Enter \"M\" for a local multiplayer game or \"C\" for a game against CPU: ");
+            System.out.print("Enter \"M\" for a local multiplayer game or \"C\" for a game against CPU (Enter \"quit\" at any time to quit): ");
             option = init.nextLine().toUpperCase();
+            checkQuit(option);
             if(option.equals("M")){
-                multi = true;
-                break;
+                return true;
             } else if (option.equals("C")){
-                multi = false;
-                break;
+                return false;
             }
         }
-        new GoFish(multi).play();
+    }
+    private static void checkQuit (String s){
+        if(s.toUpperCase().equals("QUIT")){
+            System.exit(0);
+        }
     }
 }
